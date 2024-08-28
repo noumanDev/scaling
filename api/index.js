@@ -1,6 +1,17 @@
 const express = require('express');
+const { Pool } = require('pg');
+
 const app = express();
 app.use(express.json());
+
+// Configure the PostgreSQL connection pool
+const pool = new Pool({
+    user: 'myuser',
+    host: 'localhost',
+    database: 'mydb',
+    password: 'mysecretpassword',
+    port: 5432,
+});
 
 let processedRequests = new Set(); // In-memory store for deduplication
 
@@ -24,12 +35,9 @@ app.get('/ingest/:id', (req, res) => {
         });
 });
 
-function saveToDatabase(data) {
+function saveToDatabase(requestId) {
     // Simulate a database save operation
-    return new Promise((resolve, reject) => {
-        // Replace with actual database logic
-        resolve();
-    });
+    return   pool.query('INSERT INTO request (id) VALUES ($1)', [requestId]);
 }
 
 app.listen(3000, () => {
