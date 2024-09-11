@@ -1,6 +1,9 @@
 const express = require('express');
 const { Pool } = require('pg');
 
+const port = process.env.PORT || 3000;
+
+
 const app = express();
 app.use(express.json());
 
@@ -17,7 +20,6 @@ const pool = new Pool({
 app.get('/ingest/:id', (req, res) => {
     const requestId = req.params.id;
    
- 
     // Simulate saving to the database
     saveToDatabase(requestId)
         .then(() => {
@@ -34,6 +36,6 @@ function saveToDatabase(requestId) {
     return   pool.query('INSERT INTO request (id) VALUES ($1)', [requestId]);
 }
 
-app.listen(3000, () => {
-    console.log('Server running on port 3000');
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
 });
