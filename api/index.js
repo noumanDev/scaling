@@ -14,6 +14,7 @@ const pool = new Pool({
     database: 'mydb',
     password: 'mysecretpassword',
     port: 5432,
+    max:20
 });
 
 // Expecting 'id' as a URL parameter
